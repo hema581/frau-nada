@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DP Akademie Design System - German-inspired theme */
+
+@layer base {
+  :root {
+    /* German Flag Colors - Primary Palette */
+    --german-black: 0 0% 0%;
+    --german-red: 0 85% 45%;
+    --german-gold: 45 100% 50%;
+
+    /* Academic & Professional Colors */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 5%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 10%;
+
+    /* Semantic Colors */
+    --primary: var(--german-black);
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--german-red);
+    --secondary-foreground: 0 0% 100%;
+    --accent: var(--german-gold);
+    --accent-foreground: 0 0% 10%;
+
+    /* UI Colors */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --border: 0 0% 90%;
+    --input: 0 0% 95%;
+    --ring: var(--german-red);
+
+    /* Design System */
+    --radius: 0.75rem;
+    --shadow-german: 0 4px 20px -2px hsla(0, 0%, 0%, 0.1);
+    --gradient-german: linear-gradient(135deg, hsl(var(--german-black)) 0%, hsl(var(--german-red)) 50%, hsl(var(--german-gold)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(0, 0%, 98%) 0%, hsl(45, 100%, 95%) 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  /* German-inspired button variants */
+  .btn-primary {
+    @apply bg-black text-white hover:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-accent {
+    @apply bg-gradient-to-r from-yellow-400 to-amber-500 text-black hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+
+  /* Course card styling */
+  .course-card {
+    @apply bg-card border-2 border-transparent hover:border-red-200 rounded-xl p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl;
+    background: linear-gradient(135deg, white 0%, #fef7cd 100%);
+  }
+
+  /* German cultural elements */
+  .german-pattern {
+    background-image: 
+      linear-gradient(45deg, transparent 40%, hsla(var(--german-gold), 0.1) 50%, transparent 60%),
+      linear-gradient(-45deg, transparent 40%, hsla(var(--german-red), 0.05) 50%, transparent 60%);
+  }
+
+  /* 3D effects */
+  .german-3d {
+    @apply transform transition-all duration-300 hover:scale-105;
+    box-shadow: 
+      0 4px 15px -3px hsla(var(--german-black), 0.1),
+      0 2px 6px -2px hsla(var(--german-red), 0.05);
+  }
+
+  .german-3d:hover {
+    box-shadow: 
+      0 20px 40px -12px hsla(var(--german-black), 0.15),
+      0 8px 16px -4px hsla(var(--german-red), 0.1);
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slideInFromLeft {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  0% { transform: translateY(30px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slideInFromLeft 0.8s ease-out;
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.6s ease-out;
+}
