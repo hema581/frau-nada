@@ -1,126 +1,145 @@
-
 import React from 'react';
 import { useLanguage } from '../hooks/useLanguage';
-import { GraduationCap, Heart, Target, Award, Star } from 'lucide-react';
+import { Award, Target, UserCheck, GraduationCap } from 'lucide-react';
+// 🟢 استيراد motion من framer-motion
+import { motion } from 'framer-motion';
 
-const About = () => {
-  const { t, isRTL } = useLanguage();
+import instructorImage from '../assets/instructor-photo.jpg'; 
+import secondImage from '../assets/second-photo.jpg'; // ⬅️ تأكد من أن هذا هو اسم ومسار صورتك الثانية
+
+const AboutSection = () => {
+  const { t } = useLanguage();
+
+  // 🟢 تعريف المتغيرات الخاصة بالانيميشن
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3, // يجعل العناصر تظهر بالترتيب
+        delayChildren: 0.2 // تأخير قبل بدء ظهور العناصر الفرعية
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   return (
-    <section id="about" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-display font-bold text-german-black mb-4">
-            {t.about.title}
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-german-red to-german-gold mx-auto"></div>
-        </div>
-
-        <div className={`grid lg:grid-cols-2 gap-16 items-center mb-20 ${isRTL ? 'text-right' : 'text-left'}`}>
-          {/* Instructor Info */}
-          <div className="space-y-8 animate-fade-up">
-            <div className="space-y-6">
-              <h3 className="text-2xl font-display font-semibold text-german-black flex items-center gap-3">
-                <GraduationCap className="w-8 h-8 text-german-red" />
+    <section className="py-20 bg-white" id="about">
+      {/* 🟢 استخدام motion.div للعنصر الأب للصفحة */}
+      <motion.div 
+        className="container mx-auto px-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        
+        {/* Section Title */}
+        {/* 🟢 استخدام motion.div لعنوان القسم */}
+        <motion.div 
+          className="text-center mb-12"
+          variants={itemVariants}
+        >
+          <h1 className="text-4xl md:text-5xl font-extrabold text-german-black">{t.about.title}</h1>
+          <div className="w-24 h-1 bg-gradient-to-r from-german-red to-german-gold mx-auto mt-4"></div>
+        </motion.div>
+        
+        {/* Instructor & Mission Section */}
+        {/* 🟢 استخدام motion.div لقسم المدربة والمهمة */}
+        <motion.div 
+          className="max-w-6xl mx-auto mb-20"
+          variants={itemVariants}
+        >
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12">
+            
+            {/* Photos Container */}
+            <div className="w-full md:w-1/2 lg:w-2/5 grid grid-cols-2 gap-4">
+              {/* يمكن إضافة انيميشن لكل صورة بشكل منفصل إذا أردت */}
+              <div className="rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <img
+                  src={instructorImage}
+                  alt={t.about.instructorTitle}
+                  className="w-full h-full object-cover aspect-square"
+                />
+              </div>
+              <div className="rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <img
+                  src={secondImage}
+                  alt="DP Akademie Impression"
+                  className="w-full h-full object-cover aspect-square"
+                />
+              </div>
+            </div>
+            
+            {/* Text Content */}
+            <div className="w-full md:w-1/2 lg:w-3/5 text-center md:text-start">
+              <h2 className="text-2xl font-bold text-german-black mb-3 flex items-center justify-center md:justify-start gap-2">
+                <GraduationCap className="w-7 h-7 text-german-red" /> 
                 {t.about.instructorTitle}
-              </h3>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
                 {t.about.instructorBio}
               </p>
-            </div>
-
-            <div className="space-y-6">
-              <h3 className="text-2xl font-display font-semibold text-german-black flex items-center gap-3">
-                <Target className="w-8 h-8 text-german-gold" />
+              
+              <h2 className="text-2xl font-bold text-german-black mb-3 flex items-center justify-center md:justify-start gap-2">
+                <Target className="w-7 h-7 text-german-gold" />
                 {t.about.missionTitle}
-              </h3>
+              </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 {t.about.missionText}
               </p>
             </div>
           </div>
-
-          {/* Image Placeholder - Replaceable */}
-          <div className="relative">
-            <div className="relative w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center">
-              {/* Placeholder for about page image */}
-              <div className="text-center text-gray-400">
-                <div className="text-6xl mb-4">👩‍🏫</div>
-                <p className="text-lg font-medium">صورة الأستاذة ندى</p>
-                <p className="text-sm">يمكن تغييرها لاحقاً</p>
-              </div>
-              
-              {/* German Cultural Elements Background */}
-              <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-german-red/5 to-german-gold/5"></div>
-            </div>
-          </div>
-        </div>
+        </motion.div>
 
         {/* Certifications Section */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-display font-bold text-german-black mb-4 flex items-center justify-center gap-3">
-              <Award className="w-8 h-8 text-german-gold" />
-              {t.about.certificationsTitle}
-            </h3>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+        {/* 🟢 استخدام motion.div لقسم الشهادات */}
+        <motion.div 
+          className="text-center mb-20"
+          variants={itemVariants}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-german-black mb-10 flex items-center justify-center gap-3">
+            <Award className="w-8 h-8 text-german-gold" />
+            {t.about.certificationsTitle}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {t.about.certifications.map((cert, index) => (
-              <div
-                key={index}
-                className="text-center p-8 bg-white rounded-xl german-3d animate-fade-up"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <div className="w-16 h-16 bg-german-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Award className="w-8 h-8 text-german-gold" />
-                </div>
-                <h4 className="text-xl font-display font-semibold text-german-black mb-3">
-                  {cert.title}
-                </h4>
-                <p className="text-gray-600 leading-relaxed">
-                  {cert.description}
-                </p>
+              <div key={index} className="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                <Award className="w-12 h-12 text-german-gold mx-auto mb-4" />
+                <h3 className="font-bold text-xl text-german-black mb-2">{cert.title}</h3>
+                <p className="text-gray-600">{cert.description}</p>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Testimonials Section */}
-        <div>
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-display font-bold text-german-black mb-4 flex items-center justify-center gap-3">
-              <Star className="w-8 h-8 text-german-gold" />
-              {t.about.testimonialsTitle}
-            </h3>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+        {/* 🟢 استخدام motion.div لقسم آراء الطلاب */}
+        <motion.div 
+          className="text-center"
+          variants={itemVariants}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-german-black mb-10">
+            {t.about.testimonialsTitle}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {t.about.testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-white p-8 rounded-xl german-3d animate-fade-up"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <div className="flex items-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-german-gold fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 leading-relaxed mb-6 italic">
-                  "{testimonial.text}"
-                </p>
-                <div className="border-t pt-4">
-                  <div className="font-semibold text-german-black">{testimonial.name}</div>
-                  <div className="text-sm text-gray-600">{testimonial.course}</div>
-                </div>
+              <div key={index} className="bg-gray-50 p-8 rounded-xl shadow-lg">
+                <UserCheck className="w-10 h-10 text-german-gold mx-auto mb-4" />
+                <p className="italic text-gray-700 mb-4">"{testimonial.text}"</p>
+                <p className="font-bold text-german-black">{testimonial.name}</p>
+                <p className="text-gray-500 text-sm">{testimonial.course}</p>
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+        
+      </motion.div>
     </section>
   );
 };
 
-export default About;
+export default AboutSection;

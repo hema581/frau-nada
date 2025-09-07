@@ -1,74 +1,74 @@
-
 import React from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, Phone } from 'lucide-react';
+import { Zap, Calendar, Award, Phone, MessageCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const CallToAction = () => {
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
 
-  const handleWhatsAppContact = () => {
-    const message = encodeURIComponent(t.courses.whatsappMessage);
-    window.open(`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${message}`, '_blank');
+  const features = [
+    { icon: Zap, titleKey: 'quickStart' },
+    { icon: Calendar, titleKey: 'flexibleLearning' },
+    { icon: Award, titleKey: 'certifiedResults' },
+  ];
+
+  const handleWhatsAppClick = () => {
+    const phoneNumber = t.contact.phone.replace(/\s/g, '');
+    // 🟢 تم تعديل هذا السطر ليستخدم الرسالة الجديدة
+    const message = encodeURIComponent(t.cta.ctaWhatsappMessage);
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
 
+  const telLink = `tel:${t.contact.phone.replace(/\s/g, '')}`;
+
   return (
-    <section className="py-20 bg-gradient-to-br from-german-gold/10 to-german-red/10">
+    <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className={`max-w-4xl mx-auto text-center ${isRTL ? 'text-right' : 'text-left'}`}>
-          <h2 className={`text-3xl lg:text-4xl font-display font-bold text-german-black mb-6 ${isRTL ? 'font-arabic' : ''}`}>
-            {t.cta.title}
-          </h2>
-          <p className={`text-xl text-gray-700 mb-8 leading-relaxed ${isRTL ? 'font-arabic' : ''}`}>
-            {t.cta.description}
-          </p>
-          
-          <div className={`flex flex-col sm:flex-row gap-4 ${isRTL ? 'justify-end' : 'justify-center'}`}>
-            <Button 
-              size="lg" 
-              className="btn-primary px-8 py-4 text-lg font-semibold rounded-xl flex items-center gap-3"
-              onClick={handleWhatsAppContact}
-            >
-              <MessageCircle className="w-5 h-5" />
-              {t.cta.whatsappButton}
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="px-8 py-4 text-lg font-semibold rounded-xl border-2 border-german-black text-german-black hover:bg-german-black hover:text-white flex items-center gap-3"
-            >
-              <Phone className="w-5 h-5" />
-              {t.cta.callButton}
-            </Button>
+        <motion.div 
+          className="bg-white rounded-2xl shadow-xl p-8 md:p-12 grid lg:grid-cols-2 gap-10 items-center"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
+          {/* Left Side: CTA */}
+          <div className="space-y-6 text-center lg:text-start">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-german-black">{t.cta.title}</h2>
+            <p className="text-lg text-gray-600">{t.cta.description}</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+              <Button onClick={handleWhatsAppClick} size="lg" className="btn-primary flex items-center gap-2">
+                <MessageCircle className="w-5 h-5" />
+                {t.cta.whatsappButton}
+              </Button>
+              <a href={telLink}>
+                <Button variant="outline" size="lg" className="w-full flex items-center gap-2">
+                   <Phone className="w-5 h-5" />
+                   {t.cta.callButton}
+                </Button>
+              </a>
+            </div>
           </div>
 
-          <div className={`mt-12 grid md:grid-cols-3 gap-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className={`font-semibold text-german-black mb-2 ${isRTL ? 'font-arabic' : ''}`}>
-                {t.cta.quickStart.title}
-              </h3>
-              <p className={`text-gray-600 text-sm ${isRTL ? 'font-arabic' : ''}`}>
-                {t.cta.quickStart.description}
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className={`font-semibold text-german-black mb-2 ${isRTL ? 'font-arabic' : ''}`}>
-                {t.cta.flexibleLearning.title}
-              </h3>
-              <p className={`text-gray-600 text-sm ${isRTL ? 'font-arabic' : ''}`}>
-                {t.cta.flexibleLearning.description}
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className={`font-semibold text-german-black mb-2 ${isRTL ? 'font-arabic' : ''}`}>
-                {t.cta.certifiedResults.title}
-              </h3>
-              <p className={`text-gray-600 text-sm ${isRTL ? 'font-arabic' : ''}`}>
-                {t.cta.certifiedResults.description}
-              </p>
-            </div>
+          {/* Right Side: Features */}
+          <div className="space-y-6">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              const featureData = t.cta[feature.titleKey as keyof typeof t.cta] as { title: string; description: string; };
+              return (
+                <div key={index} className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-german-gold/10 rounded-lg flex items-center justify-center">
+                    <Icon className="w-6 h-6 text-amber-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-german-black">{featureData.title}</h4>
+                    <p className="text-gray-600">{featureData.description}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

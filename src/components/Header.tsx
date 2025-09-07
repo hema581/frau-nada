@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+// تم استيراد الصورة هنا
+import logoImage from '../assets/logo.png'; 
 
 const Header = () => {
   const { currentLanguage, setLanguage, t, isRTL } = useLanguage();
@@ -26,7 +27,7 @@ const Header = () => {
     { key: 'about', path: '/about' },
     { key: 'courses', path: '/courses' },
     { key: 'faq', path: '/faq' },
-    { key: 'contact', path: '/contact' }
+    { key: 'contact', path: '/contact' } 
   ];
 
   return (
@@ -35,9 +36,10 @@ const Header = () => {
         <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           {/* Logo */}
           <Link to="/" className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
-            <div className="w-12 h-12 bg-gradient-to-br from-german-black to-german-red rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-xl">DP</span>
-            </div>
+            
+            {/* تم استبدال النص بصورة الشعار */}
+            <img src={logoImage} alt="DP Akademie Logo" className="w-12 h-12" />
+
             <div className={isRTL ? 'text-right' : 'text-left'}>
               <h1 className="text-xl font-display font-bold text-german-black">DP Akademie</h1>
               <p className="text-sm text-gray-600">

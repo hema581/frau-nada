@@ -1,37 +1,38 @@
+import { Routes, Route } from 'react-router-dom';
+import { useLanguage } from './hooks/useLanguage';
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Courses from "./pages/Courses";
-import FAQ from "./pages/FAQ";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import WhatsAppButton from "./components/WhatsAppButton";
+// استيراد المكونات والصفحات
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Index from './pages/Index';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import CoursesPage from './pages/Courses'; // تم تغيير الاسم هنا ليكون أوضح
+import CourseDetailPage from './pages/CourseDetail'; // 1. استيراد صفحة التفاصيل الجديدة
+import FAQ from './pages/FAQ';
+import NotFound from './pages/NotFound';
 
-const queryClient = new QueryClient();
+function App() {
+  const { currentLanguage } = useLanguage();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+  return (
+    <div key={currentLanguage} className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/courses" element={<CoursesPage />} />
+          {/* 2. هذا هو المسار الديناميكي الجديد الذي أضفناه */}
+          <Route path="/courses/:courseId" element={<CourseDetailPage />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="*" element={<NotFound />} /> 
         </Routes>
-        <WhatsAppButton />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 export default App;

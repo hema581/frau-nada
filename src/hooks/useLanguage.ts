@@ -1,33 +1,45 @@
+import { useState, useEffect, useMemo } from 'react';
+import { translations, Language, TranslationContent } from '../translations'; // تأكد من أن مسار ملف الترجمة صحيح
 
-import { useState, useEffect } from 'react';
-import { Language, translations } from '../types/language';
-
-const detectLanguage = (): Language => {
-  const browserLang = navigator.language.toLowerCase();
-  
-  if (browserLang.startsWith('de')) return 'de';
-  if (browserLang.startsWith('ar')) return 'ar';
-  return 'en'; // Default to English
+// دالة للحصول على اللغة المحفوظة أو الافتراضية
+const getInitialLanguage = (): Language => {
+  // حاول قراءة اللغة من localStorage
+  const storedLang = localStorage.getItem('language');
+  // تحقق إذا كانت اللغة المحفوظة هي إحدى اللغات المعتمدة
+  if (storedLang && (storedLang === 'de' || storedLang === 'ar' || storedLang === 'en')) {
+    return storedLang;
+  }
+  // إذا لم تكن موجودة، استخدم لغة المتصفح أو الألمانية كافتراضي
+  const browserLang = navigator.language.split('-')[0];
+  if (browserLang === 'ar' || browserLang === 'de' || browserLang === 'en') {
+    return browserLang;
+  }
+  return 'de'; // اللغة الافتراضية
 };
 
 export const useLanguage = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem('dp-akademie-language');
-    return (saved as Language) || detectLanguage();
-  });
+  // الخطوة 1: استخدام useState لتخزين اللغة الحالية في ذاكرة التطبيق
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(getInitialLanguage);
 
+  // الخطوة 2: استخدام useEffect لحفظ اللغة في localStorage كلما تغيرت
   useEffect(() => {
-    localStorage.setItem('dp-akademie-language', currentLanguage);
-    document.documentElement.lang = currentLanguage;
+    localStorage.setItem('language', currentLanguage);
+    // تحديث اتجاه الصفحة (RTL/LTR)
     document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = currentLanguage;
   }, [currentLanguage]);
 
-  const t = translations[currentLanguage];
+  // الخطوة 3 (الأهم): استخدام useMemo لإعادة حساب الترجمات فقط عند تغير اللغة
+  const t = useMemo((): TranslationContent => {
+    return translations[currentLanguage];
+  }, [currentLanguage]);
 
-  return {
-    currentLanguage,
-    setLanguage: setCurrentLanguage,
-    t,
-    isRTL: currentLanguage === 'ar'
+  const isRTL = useMemo(() => currentLanguage === 'ar', [currentLanguage]);
+
+  const setLanguage = (lang: Language) => {
+    setCurrentLanguage(lang);
   };
+
+  // إرجاع كل القيم التي تحتاجها المكونات
+  return { currentLanguage, setLanguage, t, isRTL };
 };

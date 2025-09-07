@@ -5,7 +5,7 @@ import { useLanguage } from '../hooks/useLanguage';
 
 const WhatsAppButton = () => {
   const { t } = useLanguage();
-  const phoneNumber = '+491234567890';
+  const phoneNumber = '+201029398799';
   const message = t.courses.whatsappMessage;
   
   const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodeURIComponent(message)}`;
