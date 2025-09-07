@@ -5,8 +5,7 @@ import path from "path"
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // أضف هذا السطر
-  base: '/frau-nada/', 
+  base: './', // ✅ لازم تبقى كده عشان Netlify
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
